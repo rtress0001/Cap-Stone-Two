@@ -1,0 +1,450 @@
+
+Run this to enable the rest of the program to run
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+
+mcu <- read.csv('mcu dataset.csv')
+View(data)
+```
+Hypthosesis Questions:
+Hypothesis:Robert Downy Jr. has the highest average gross profit of gross - budget?
+True
+Hypothesis:Captain america has the lowest average metascore?  check
+flase
+Hypothesis:What movie has the highest total profit gross - budget? 
+endgame
+Hypothesis:What movie has the best meta score to budget-ratio?, check
+Iron man
+Hypothesis:What cast member is the least number of movies pointless 
+many only have 1
+Hypothesis:What movie made the most money after its release total gross - opening, check
+endgame
+Hypothesis: What director has the highest average metascore: check
+IMDB.rating James Gunn, metacore of Ryan Coogler
+Hypothesis: What actor has the highest average meta score/IMDB.rating? check
+Chadwick Boseman, Tom Holland 
+
+Hypothesis: Robert Downey Jr. Hast the most number of movies.check
+
+Hyptothesis: What cast member has the highest average metascore.cheeck
+Chadwick Boseman
+Hyptothesis: What cast member has the highest average IMDBD rating check
+Josh Brolin
+Hypothesis: What is the average meta score for all the movies: check
+The meta score avereage rating is  68.65217391304348
+
+The average IMDB Rating has an average score of 7.4434782608695675 check
+
+Hypothesis: What cast member is in the most movies. check
+Rober Downey Jr.
+Hypothesis: For each cast member what is the total number of the total gross check
+Robert Downey J.
+
+```{r}
+mean(mcu$IMDB.rating)
+```
+```{r}
+mean(mcu$metascore)
+```
+
+```{r}
+# Assuming mcu is your data frame in R
+
+# Replace dollar signs with an empty string
+mcu$Budgetint <- gsub("\\$", "", mcu$Budget)
+
+# Replace commas with an empty string
+mcu$Budgetint <- gsub(",", "", mcu$Budgetint)
+
+# Convert the column to numeric
+mcu$Budgetint <- as.numeric(mcu$Budgetint)
+
+#replace the dollar signs with an empty string
+mcu$Total.Grossint <- gsub("\\$", "", mcu$Total.Gross)
+
+#replace commas with an empty string
+mcu$Total.Grossint <- gsub(",", "", mcu$Total.Grossint)
+
+#convert the column to numeric
+mcu$Total.Grossint <- as.numeric(mcu$Total.Grossint)
+
+mcu$total_profit <- mcu$Total.Grossint - mcu$Budgetint
+
+
+# Assuming your data frame is named 'mcu'
+# You can replace these with your actual data frame and column names
+
+max_row <- which.max(mcu$total_profit)
+max_name <- mcu$Name[max_row]
+max_value <- max(mcu$total_profit)
+
+cat("The name with the maximum total profit is:", max_name, "\n")
+cat("The maximum total profit is:", max_value, "\n")
+
+```
+
+What movie has the highest review to budget ratio to determine effienceny
+```{r}
+
+# Assuming mcu is your data frame in R
+
+# Replace dollar signs with an empty string
+mcu$Budgetint <- gsub("\\$", "", mcu$Budget)
+
+# Replace commas with an empty string
+mcu$Budgetint <- gsub(",", "", mcu$Budgetint)
+
+# Convert the column to numeric
+mcu$Budgetint <- as.numeric(mcu$Budgetint)
+
+mcu$Review_to_Buget <- mcu$metascore/mcu$Budgetint
+
+max_row <- which.max(mcu$Review_to_Buget)
+max_name <- mcu$Name[max_row]
+max_value <- max(mcu$Review_to_Buget)
+
+cat("The name with the maximum total profit is:", max_name, "\n")
+cat("The maximum total profit is:", max_value, "\n")
+
+
+```
+Does Captain america has the lowest average metascore?
+```{r}
+captain_america <- subset(mcu, grepl("Chris Evans", Cast))
+mean(captain_america$metascore)
+hulk <- subset(mcu, grepl("Edward Norton", Cast))
+mean(hulk$metascore)
+```
+Captain america does not have the lowest metascore
+
+What director has the highest average metascore?
+
+```{r}
+Directors <- c('Jon Favreau', 'Louis Leterrier', 'Kenneth Branagh', 'Joe Jhonston', 'Joss Whedon', 'Shane Black', 
+             'Alan Taylor', 'Anthony and Joe Russo','James Gunn' ,'Peyton Reed', 'Scott Derrickson', 'Jon Watts', 
+             'Ryan Coogler', 'Anna Boden and Ryan Fleck')
+
+for (director in Directors) { 
+average_director <- subset(mcu, grepl(director, Director))
+cat("The Director has the average score of",director,mean(average_director$metascore),"\n")
+}
+```
+Ryan Coogler has the highest meta score of 88
+
+```{r}
+Directors <- c('Jon Favreau', 'Louis Leterrier', 'Kenneth Branagh', 'Joe Jhonston', 'Joss Whedon', 'Shane Black', 
+             'Alan Taylor', 'Anthony and Joe Russo','James Gunn' ,'Peyton Reed', 'Scott Derrickson', 'Jon Watts', 
+             'Ryan Coogler', 'Anna Boden and Ryan Fleck')
+
+for (director in Directors) { 
+average_director <- subset(mcu, grepl(director, Director))
+cat("The Director has the average score of",director,mean(average_director$IMDB.rating),"\n")
+}
+```
+The director james gunn has the highest IMDB rating
+
+```{r}
+casts <- c(
+    "Robert Downey Jr.",
+    'Gweneth Paltrow ',
+    'Terrence Howard',
+    'Edward Norton',
+    'Liv Tyler',
+    'Tim Roth',
+    'Mickey Rourke',
+    'Chris Hemsworth',
+    'Anthony Hopkins',
+    'Natalie Portman',
+    'Chris Evans',
+    'Hugo Weaving',
+    'Samuel L. Jackson',
+    'Scarlett Johansson',
+    'Jeremy Renner',
+    'Guy Pearce',
+    'Tom Hiddleston',
+    'Chris Patt', 
+    'Vin Diesel',
+    'Bradely Cooper',
+    'Mark Ruffalo',
+    'Paul Rudd',
+    'Michael Douglas',
+    'Corey Stall',
+    'Sebastian Stan',
+    'Benedict Cumberbatch',
+    'Chiswetel Ejiofor',
+    'Racheal McAdams',
+    'Zoe Saldana',
+    'Dave Bautista',
+    'Michael Keaton',
+    'Cate Blanchett',
+    'Chadwick Boseman',
+    'Michael B. Jordan',
+    "Josh Brolin",
+    "Jake Gyllenhaal",
+    "Lupita Nyong'o"
+)
+char <- ''
+max <- 0
+min <- 100
+charmin<-''
+for (cast in casts) { 
+average_cast <- subset(mcu, grepl(cast, Cast))
+if(mean(average_cast$metascore) > max){
+  char <- cast
+  max <- mean(average_cast$metascore)
+}
+
+if(mean(average_cast$metascore) < min){
+  charmin <- cast
+  min <- mean(average_cast$metascore)
+}
+cat("The actor member has the average metascore of",cast,mean(average_cast$metascore),"\n")
+}
+cat("The actor with the hightest metascore is ", char, max,"\n")
+cat("The actor with the lowest metascore is ", charmin, min)
+```
+
+```{r}
+casts <- c(
+    "Robert Downey Jr.",
+    'Gweneth Paltrow ',
+    'Terrence Howard',
+    'Edward Norton',
+    'Liv Tyler',
+    'Tim Roth',
+    'Mickey Rourke',
+    'Chris Hemsworth',
+    'Anthony Hopkins',
+    'Natalie Portman',
+    'Chris Evans',
+    'Hugo Weaving',
+    'Samuel L. Jackson',
+    'Scarlett Johansson',
+    'Jeremy Renner',
+    'Guy Pearce',
+    'Tom Hiddleston',
+    'Chris Patt', 
+    'Vin Diesel',
+    'Bradely Cooper',
+    'Mark Ruffalo',
+    'Paul Rudd',
+    'Michael Douglas',
+    'Corey Stall',
+    'Sebastian Stan',
+    'Benedict Cumberbatch',
+    'Chiswetel Ejiofor',
+    'Racheal McAdams',
+    'Zoe Saldana',
+    'Dave Bautista',
+    'Michael Keaton',
+    'Cate Blanchett',
+    'Chadwick Boseman',
+    'Michael B. Jordan',
+    "Josh Brolin",
+    "Jake Gyllenhaal",
+    "Lupita Nyong'o"
+)
+char <- ''
+max <- 0
+for (cast in casts) { 
+average_cast <- subset(mcu, grepl(cast, Cast))
+if(mean(average_cast$IMDB.rating) > max){
+  char <- cast
+  max <- mean(average_cast$IMDB.rating)
+}
+cat("The Cast member has the average score of",cast,mean(average_cast$IMDB.rating),"\n")
+}
+cat("The lead actor with the hightest meta score is", char, max )
+```
+
+```{r}
+casts <- c(
+    "Robert Downey Jr.",
+    'Gweneth Paltrow ',
+    'Terrence Howard',
+    'Edward Norton',
+    'Liv Tyler',
+    'Tim Roth',
+    'Mickey Rourke',
+    'Chris Hemsworth',
+    'Anthony Hopkins',
+    'Natalie Portman',
+    'Chris Evans',
+    'Hugo Weaving',
+    'Samuel L. Jackson',
+    'Scarlett Johansson',
+    'Jeremy Renner',
+    'Guy Pearce',
+    'Tom Hiddleston',
+    'Chris Patt', 
+    'Vin Diesel',
+    'Bradely Cooper',
+    'Mark Ruffalo',
+    'Paul Rudd',
+    'Michael Douglas',
+    'Corey Stall',
+    'Sebastian Stan',
+    'Benedict Cumberbatch',
+    'Chiswetel Ejiofor',
+    'Racheal McAdams',
+    'Zoe Saldana',
+    'Dave Bautista',
+    'Michael Keaton',
+    'Cate Blanchett',
+    'Chadwick Boseman',
+    'Michael B. Jordan',
+    "Josh Brolin",
+    "Jake Gyllenhaal",
+    "Lupita Nyong'o"
+)
+char <- ''
+max <- 0
+for (cast in casts) { 
+average_cast <- subset(mcu, grepl(cast, Cast))
+cast_count = nrow(average_cast)
+if(cast_count > max){
+  char <- cast
+  max <- cast_count
+}
+cat("The cast member has the count of movies",cast,cast_count,"\n")
+}
+cat("The cast with the hightest count is ", char, max )
+
+```
+
+```{r}
+casts <- c(
+    "Robert Downey Jr.",
+    'Gweneth Paltrow ',
+    'Terrence Howard',
+    'Edward Norton',
+    'Liv Tyler',
+    'Tim Roth',
+    'Mickey Rourke',
+    'Chris Hemsworth',
+    'Anthony Hopkins',
+    'Natalie Portman',
+    'Chris Evans',
+    'Hugo Weaving',
+    'Samuel L. Jackson',
+    'Scarlett Johansson',
+    'Jeremy Renner',
+    'Guy Pearce',
+    'Tom Hiddleston',
+    'Chris Patt', 
+    'Vin Diesel',
+    'Bradely Cooper',
+    'Mark Ruffalo',
+    'Paul Rudd',
+    'Michael Douglas',
+    'Corey Stall',
+    'Sebastian Stan',
+    'Benedict Cumberbatch',
+    'Chiswetel Ejiofor',
+    'Racheal McAdams',
+    'Zoe Saldana',
+    'Dave Bautista',
+    'Michael Keaton',
+    'Cate Blanchett',
+    'Chadwick Boseman',
+    'Michael B. Jordan',
+    "Josh Brolin",
+    "Jake Gyllenhaal",
+    "Lupita Nyong'o"
+)
+
+char <- ''
+max <- 0
+
+for (cast in casts) { 
+    sum_total_gross <- subset(mcu, grepl(cast, Cast))
+    if (sum(sum_total_gross$Total.Grossint, na.rm = TRUE) > max) {
+        char <- cast
+        max <- sum(sum_total_gross$Total.Grossint, na.rm = TRUE)
+    }
+    cat("The Cast member", cast, "has a total gross of", sum(sum_total_gross$Total.Grossint, na.rm = TRUE), "\n")
+}
+
+cat("The cast with the highest total gross is", char, "with a total gross of", max, "\n")
+
+```
+```{r}
+casts <- c(
+    "Robert Downey Jr.",
+    'Gweneth Paltrow ',
+    'Terrence Howard',
+    'Edward Norton',
+    'Liv Tyler',
+    'Tim Roth',
+    'Mickey Rourke',
+    'Chris Hemsworth',
+    'Anthony Hopkins',
+    'Natalie Portman',
+    'Chris Evans',
+    'Hugo Weaving',
+    'Samuel L. Jackson',
+    'Scarlett Johansson',
+    'Jeremy Renner',
+    'Guy Pearce',
+    'Tom Hiddleston',
+    'Chris Patt', 
+    'Vin Diesel',
+    'Bradely Cooper',
+    'Mark Ruffalo',
+    'Paul Rudd',
+    'Michael Douglas',
+    'Corey Stall',
+    'Sebastian Stan',
+    'Benedict Cumberbatch',
+    'Chiswetel Ejiofor',
+    'Racheal McAdams',
+    'Zoe Saldana',
+    'Dave Bautista',
+    'Michael Keaton',
+    'Cate Blanchett',
+    'Chadwick Boseman',
+    'Michael B. Jordan',
+    "Josh Brolin",
+    "Jake Gyllenhaal",
+    "Lupita Nyong'o"
+)
+
+char <- ''
+max <- 0
+
+for (cast in casts) { 
+    sum_total_gross <- subset(mcu, grepl(cast, Cast))
+    if (sum(sum_total_gross$Total.Grossint, na.rm = TRUE) - sum(sum_total_gross$Budgetint, na.rm = TRUE) > max) {
+        char <- cast
+        max <- sum(sum_total_gross$Total.Grossint, na.rm = TRUE)- sum(sum_total_gross$Budgetint, na.rm = TRUE)
+    }
+    cat("The Cast member", cast, "has a total gross of", sum(sum_total_gross$Total.Grossint, na.rm = TRUE) - sum(sum_total_gross$Budgetint, na.rm = TRUE), "\n")
+}
+
+cat("The cast with the highest total gross is", char, "with a total gross of", max, "\n")
+
+```
+```{r}
+Directors <- c('Jon Favreau', 'Louis Leterrier', 'Kenneth Branagh', 'Joe Jhonston', 'Joss Whedon', 'Shane Black', 
+             'Alan Taylor', 'Anthony and Joe Russo','James Gunn' ,'Peyton Reed', 'Scott Derrickson', 'Jon Watts', 
+             'Ryan Coogler', 'Anna Boden and Ryan Fleck')
+max <- 0
+dir <- ''
+
+for (director in Directors) { 
+average_director <- subset(mcu, grepl(director, Director))
+if (mean(average_director$Total.Grossint) > max) {
+  dir <- director
+  max <- mean(average_director$Total.Grossint)
+  
+}
+cat("The Director has the average score of",director,mean(average_director$Total.Grossint),"\n")
+}
+cat("The Director has the highest average total gross of",dir,"of",max)
+```
+
+
+
+
